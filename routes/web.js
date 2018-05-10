@@ -1,4 +1,4 @@
-const router = require('express').Router();
+var router = require('express').Router();
 
 /*
 ** Pages
