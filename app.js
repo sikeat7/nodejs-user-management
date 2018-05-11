@@ -10,23 +10,25 @@ const passport = require('passport');
 const logger = require('morgan');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
-const hbs = require('express-handlebars');
+const expressHandlebars = require('express-handlebars');
 const multer = require('multer');
 
 const app = express();
 const upload = multer({ dest: './uploads' });
 
 // Engine Setup
-app.engine('hbs', hbs({ extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname + './resources/views/layouts' }));
-app.set('views', path.join(__dirname, 'resources/views'));
-app.set('view engine', 'hbs');
-
-// Routes
-// var webRoute = require('./routes/web');
-// app.use(webRoute);
-app.get('/', (req, res) => {
-    res.render('./index.hbs');
+app.set('views', __dirname + '/resources/views');
+const hbs = expressHandlebars.create({
+    extname: 'hbs',
+    layoutsDir: 'resources/views/layouts',
+    defaultLayout: 'layout',
+    helpers: 'resources/views/helpers',
+    partialsDir: [
+        'resources/views/partials'
+    ]
 });
+app.engine('hbs', hbs.engine);
+app.set('view engine', 'hbs');
 
 // Middleware
 app.use(express.static(__dirname + '/public'));
@@ -58,6 +60,10 @@ app.use(expressValidator({
       };
     }
 }));
+
+// Routes
+var webRoute = require('./routes/web');
+app.use(webRoute);
 
 // Start up the server
 app.listen(config.port, (err) => {
