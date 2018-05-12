@@ -18,24 +18,20 @@ const upload = multer({ dest: './uploads' });
 
 // Engine Setup
 app.set('views', __dirname + '/resources/views');
-const hbs = expressHandlebars.create({
+app.engine('hbs', expressHandlebars({
     extname: 'hbs',
-    layoutsDir: 'resources/views/layouts',
     defaultLayout: 'layout',
-    helpers: 'resources/views/helpers',
-    partialsDir: [
-        'resources/views/partials'
-    ]
-});
-app.engine('hbs', hbs.engine);
+    layoutsDir: __dirname+'/resources/views/layouts'
+}));
 app.set('view engine', 'hbs');
+
 
 // Middleware
 app.use(express.static(__dirname + '/public'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser);
+// app.use(cookieParser);
 app.use(flash());
 app.use(session({
     resave: true,
