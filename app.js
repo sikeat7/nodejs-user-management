@@ -12,17 +12,22 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const expressHandlebars = require('express-handlebars');
 const multer = require('multer');
+const fs = require('fs');
 
 const app = express();
 const upload = multer({ dest: './uploads' });
 
 // Engine Setup
 app.set('views', __dirname + '/resources/views');
-app.engine('hbs', expressHandlebars({
+const hbs = expressHandlebars({
     extname: 'hbs',
     defaultLayout: 'layout',
-    layoutsDir: __dirname+'/resources/views/layouts'
-}));
+    layoutsDir: __dirname+'/resources/views/layouts',
+    partialsDir: [
+        './resources/views/partials'
+    ]
+});
+app.engine('hbs', hbs);
 app.set('view engine', 'hbs');
 
 
