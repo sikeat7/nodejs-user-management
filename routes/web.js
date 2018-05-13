@@ -7,6 +7,10 @@ router.get('/', (req, res) => {
 
 
 router.get('/users', (req, res) => {
+	const meta = [{
+		page_title: 'User Management'
+	}];
+
 	const users = [{
 		first_name: 'Andrew',
 		last_name: 'Kevin',
@@ -34,7 +38,7 @@ router.get('/users', (req, res) => {
 		email: 'andrew.kevin@gmail.com'
 	}];
 
-	res.render('users', {users});
+	res.render('users', {users, meta});
 });
 
 module.exports = router;
