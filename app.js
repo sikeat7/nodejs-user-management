@@ -10,6 +10,7 @@ const passport = require('passport');
 const logger = require('morgan');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
+const handlebars = require('handlebars');
 const expressHandlebars = require('express-handlebars');
 const multer = require('multer');
 const fs = require('fs');
@@ -29,7 +30,7 @@ const hbs = expressHandlebars({
 });
 app.engine('hbs', hbs);
 app.set('view engine', 'hbs');
-
+require('./app/engine/handlebars');
 
 // Middleware
 app.use(express.static(__dirname + '/public'));

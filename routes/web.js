@@ -8,10 +8,9 @@ router.get('/', (req, res) => {
     res.render('./index', {meta});
 });
 
-
 router.get('/users', (req, res) => {
 	const meta = {
-		page_title: 'User Management',
+		page_title: 'User List',
 		page_link: '/users'
 	};
 

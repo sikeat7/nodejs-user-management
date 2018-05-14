@@ -27,6 +27,7 @@
     "express-session": "^1.15.6",
     "express-validator": "^5.2.0",
     "handlebars": "^4.0.11",
+    "ionicons": "^4.0.0",
     "moment": "^2.22.1",
     "mongodb": "^3.0.8",
     "mongoose": "^5.0.17",

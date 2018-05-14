@@ -1,3 +1,10 @@
-{{> header }}
-    {{{ body }}}
+{{> header }} {{> _topnav }}
+
+<div class="container-fluid">
+    <div class="row">
+
+        {{> _leftnav }} {{{ body }}}
+
+    </div>
+</div>
 {{> footer }}
