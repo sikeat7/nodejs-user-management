@@ -1,5 +1,10 @@
-module.exports = {
-    database: 'mongodb://root:123@ds243008.mlab.com:43008/node_amazon',
-    port: 3000,
-    secretKey: 'yZ?%trx46sjcQ?e?'
-};
+var env = process.env.NODE_ENV || 'development';
+
+if (env === 'development' || env === 'test') {
+    var config = require('./config.json');
+    var envConfig = config[env];
+
+    Object.keys(envConfig).forEach((key) => {
+        process.env[key] = envConfig[key];
+    });
+}

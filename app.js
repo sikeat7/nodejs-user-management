@@ -42,7 +42,7 @@ app.use(flash());
 app.use(session({
     resave: true,
     saveUninitialized: true,
-    secret: config.secretKey,
+    secret: process.env.JWT_SECRET,
 }));
 // validator
 app.use(expressValidator({
@@ -68,7 +68,7 @@ app.use(webRoute);
 app.use(authRoute);
 
 // Start up the server
-app.listen(config.port, (err) => {
+app.listen(process.env.PORT, (err) => {
     if (err) throw err;
-    console.log('Server up on port', config.port);
+    console.log('Server up on port', process.env.PORT);
 });

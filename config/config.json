@@ -1,0 +1,12 @@
+{
+    "test": {
+        "PORT": 3000,
+        "MONGODB_URI": "mongodb://localhost:27017/UserManagementDBTest",
+        "JWT_SECRET": "yZ?%trx46sjcQ?e?"
+    },
+    "development": {
+        "PORT": 3000,
+        "MONGODB_URI": "mongodb://localhost:27017/UserManagementDB",
+        "JWT_SECRET": "yZ?%trx46sjcQ?e?"
+    }
+}

@@ -76,10 +76,12 @@ h2 {
     <i class="icon ion-logo-nodejs"></i>   
     <h2>{{meta.page_title}}</h2>
     <div class="box">
-        <input type="text" placeholder="username">
-	    <input type="password" placeholder="password">
-	    {{!-- <button class="btn btn-default full-width"><span class="glyphicon glyphicon-ok"></span></button> --}}
-        <button class="btn btn-default full-width"><i class="icon ion-md-checkmark"></i>  </button>
+		<form action="" method="POST">
+			<input name="email" type="email" placeholder="email">
+			<input name="password" type="password" placeholder="password">
+			{{!-- <button class="btn btn-default full-width"><span class="glyphicon glyphicon-ok"></span></button> --}}
+			<button id="login" class="btn btn-default full-width"><i class="icon ion-md-checkmark"></i>  </button>
+		</form>
     </div>
   </div>
 </div>
