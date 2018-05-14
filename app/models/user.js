@@ -1,15 +1,11 @@
-const _ = require('loadash');
+const _ = require('lodash');
 const mongoose = require('mongoose');
 const validator = require('validator');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+var crypto = require('crypto');
 
-var UserSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        minlength:3
-    },
+const UserSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
@@ -26,6 +22,25 @@ var UserSchema = new mongoose.Schema({
         required: true,
         minlength: 3
     },
+    telephone: {
+        type: String,
+        default: ''
+    },
+    address: {
+        type: String,
+        default: ''
+    },
+    profile: [{
+        name: {
+            type: String,
+            required: true,
+            minlength:2
+        },
+        picture: {
+            type: String,
+            default: ''
+        }
+    }],
     tokens: [{
         access: {
             type: String,
@@ -35,29 +50,103 @@ var UserSchema = new mongoose.Schema({
             type: String,
             required: true
         }
-    }],
-    profile: {
-        type: String,
-        default: null
-    }
+    }]
 });
 
 UserSchema.methods.toJSON = function () {
-    var user = this;
-    var userObject = user.toObject();
+    const user = this;
+    const userObject = user.toObject();
     return _.pick(userObject, ['_id', 'name', 'email', 'profile']);
-}
+};
 
-UserSchema.methods.findByToken = function (token) { 
-    var User = this;
-    var decoded;
+UserSchema.methods.gravatar = function (size) {
+    const user = this;
+    if (!size) size = 200;
+    if (!user.email) return 'https://gravatar.com/avatar/?s' + size + '&d=retro';
+    const md5 = crypto.createHash('md5').update(user.email).digest('hex');
+    return 'https://gravatar.com/avatar/' + md5 + '?s=' + size + '&d=retro';
+};
+
+UserSchema.methods.generateAuthToken = function () {
+    const user = this;
+    const access = 'auth';
+    const token = jwt.sign({
+        _id: user._id.toHexString(),
+        access
+    }, process.env.JWT_SECRET).toString();
+
+    user.tokens.push({
+        access,
+        token
+    });
+
+    return user.save().then(() => {
+        return token;
+    });
+};
+
+UserSchema.methods.removeToken = function () {
+    const user = this;
+
+    return user.update({
+        $pull: {
+            tokens: { token }
+        }
+    });
+};
+
+UserSchema.statics.findByToken = function (token) { 
+    const User = this;
+    const decoded = '';
     try {
         decoded = jwt.verify(token, process.env.JWT_SECRET);
     } catch (error) {
         return Promise.reject();
     }
+
+    return User.findOne({
+        '_id': decoded._id,
+        'tokens.token': token,
+        'tokens.access': 'auth'
+    });
+};
+
+UserSchema.statics.findByCredentials = async function (email, password) {
+    const User = this;
+    try {
+        const user = await User.findOne({ email });
+        bcrypt.compare(password, user.password, (err, res) => {
+            if (res) {
+                return user;
+            }else{
+                throw new Error();
+            }
+        });
+    } catch (error) {
+        throw new Error(`Unable to get the user.`);
+    }
+};
+
+UserSchema.pre('save', function () {
+    const user = this;
+
+    if (user.isModified('password')) {
+        bcrypt.genSalt(12, (err, salt) => {
+            bcrypt.hash(user.password, salt, (err, hash) => {
+                user.password = hash;
+                next();
+            });
+        });
+    }else{
+        next();
+    }
+});
+
+UserSchema.methods.comparePassword = function (password) {
+    const user = this;
+    return bcrypt.compareSync(password, user.password);
 }
 
-var User = mongoose.model('Users', UserSchema);
+const User = mongoose.model('Users', UserSchema);
 
 module.exports = {User};
