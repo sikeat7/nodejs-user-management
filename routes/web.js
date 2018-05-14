@@ -1,15 +1,19 @@
 const router = require('express').Router();
 
 router.get('/', (req, res) => {
-    console.log('Hello World');
-    res.render('./index');
+    const meta = {
+		page_title: 'Home Page',
+		page_link: '/'
+	};
+    res.render('./index', {meta});
 });
 
 
 router.get('/users', (req, res) => {
-	const meta = [{
-		page_title: 'User Management'
-	}];
+	const meta = {
+		page_title: 'User Management',
+		page_link: '/users'
+	};
 
 	const users = [{
 		first_name: 'Andrew',
