@@ -50,11 +50,9 @@ app.use(expressValidator({
       var namespace = param.split('.'),
           root      = namespace.shift(),
           formParam = root;
-  
       while(namespace.length) {
         formParam += '[' + namespace.shift() + ']';
       }
-  
       return {
         param: formParam,
         msg  : msg,
@@ -64,8 +62,10 @@ app.use(expressValidator({
 }));
 
 // Routes
-var webRoute = require('./routes/web');
+const webRoute = require('./routes/web');
+const authRoute = require('./routes/auth');
 app.use(webRoute);
+app.use(authRoute);
 
 // Start up the server
 app.listen(config.port, (err) => {
