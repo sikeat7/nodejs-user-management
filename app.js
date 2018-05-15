@@ -1,19 +1,16 @@
 const config = require('./config/config');
 const express = require('express');
-const path = require('path');
-const expressMessages = require('express-messages');
 const expressValidator = require('express-validator');
 const bodyParser = require('body-parser');
 const flash = require('connect-flash');
-const bcryptjs = require('bcryptjs');
-const passport = require('passport');
 const logger = require('morgan');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const handlebars = require('handlebars');
 const expressHandlebars = require('express-handlebars');
 const multer = require('multer');
-const fs = require('fs');
+
+const {mongoose} = require('./app/db/mongoose');
 
 const app = express();
 const upload = multer({ dest: './uploads' });
