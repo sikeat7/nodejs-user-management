@@ -14,10 +14,10 @@ router.get('/login', (req, res) => {
     res.render('./auth/login', {layout: false, meta, error: req.flash('loginMessage') });
 });
 
-router.post('/login', 	szx.authenticate('local-login'), {
+router.post('/login', passport.authenticate('local-login', {
 	successRedirect: '/profile',
 	failureRedirect: '/login',
 	failureFlash: true
-});
+}));
 
 module.exports = router;
