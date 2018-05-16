@@ -41,7 +41,43 @@ router.get('/users', (req, res) => {
 		email: 'andrew.kevin@gmail.com'
 	}];
 
-	res.render('users', {users, meta});
+	res.render('users/users', {users, meta});
+});
+
+router.get('/users/profile', (req, res) => {
+	const meta = {
+		page_title: 'User List',
+		page_link: '/users'
+	};
+
+	const users = [{
+		first_name: 'Andrew',
+		last_name: 'Kevin',
+		mob_no: '02342341',
+		email: 'andrew.kevin@gmail.com'
+	},{
+		first_name: 'Sak',
+		last_name: 'Sorrow',
+		mob_no: '02342341',
+		email: 'andrew.kevin@gmail.com'
+	},{
+		first_name: 'Lee',
+		last_name: 'Chin',
+		mob_no: '02342341',
+		email: 'andrew.kevin@gmail.com'
+	},{
+		first_name: 'Min',
+		last_name: 'Lee',
+		mob_no: '02342341',
+		email: 'andrew.kevin@gmail.com'
+	},{
+		first_name: 'Andrew',
+		last_name: 'Kevin',
+		mob_no: '02342341',
+		email: 'andrew.kevin@gmail.com'
+	}];
+
+	res.render('/users/profile', {users, meta});
 });
 
 module.exports = router;
