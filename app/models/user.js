@@ -1,11 +1,11 @@
-const _ = require('lodash');
-const mongoose = require('mongoose');
-const validator = require('validator');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+var _ = require('lodash');
+var mongoose = require('mongoose');
+var validator = require('validator');
+var jwt = require('jsonwebtoken');
+var bcrypt = require('bcryptjs');
 var crypto = require('crypto');
 
-const UserSchema = new mongoose.Schema({
+var UserSchema = mongoose.Schema({
     email: {
         type: String,
         required: true,
@@ -52,6 +52,16 @@ const UserSchema = new mongoose.Schema({
         }
     }]
 });
+
+// generateHash
+UserSchema.methods.generateHash = function (password) {
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(10), null);
+}
+
+UserSchema.methods.validPassword = function (password) {
+    const user = this;
+    return bcrypt.compareSync(password, user.password);
+}
 
 UserSchema.methods.toJSON = function () {
     const user = this;
@@ -127,9 +137,9 @@ UserSchema.statics.findByCredentials = async function (email, password) {
     }
 };
 
-UserSchema.pre('save', function () {
+UserSchema.pre('save', function (next) {
     const user = this;
-
+    
     if (user.isModified('password')) {
         bcrypt.genSalt(12, (err, salt) => {
             bcrypt.hash(user.password, salt, (err, hash) => {
@@ -147,6 +157,6 @@ UserSchema.methods.comparePassword = function (password) {
     return bcrypt.compareSync(password, user.password);
 }
 
-const User = mongoose.model('Users', UserSchema);
+var User = mongoose.model('Users', UserSchema);
 
 module.exports = {User};

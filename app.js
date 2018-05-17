@@ -1,5 +1,6 @@
 const config = require('./config/config');
 const express = require('express');
+const passport = require('passport');
 const expressValidator = require('express-validator');
 const bodyParser = require('body-parser');
 const flash = require('connect-flash');
@@ -9,6 +10,7 @@ const cookieParser = require('cookie-parser');
 const handlebars = require('handlebars');
 const expressHandlebars = require('express-handlebars');
 const multer = require('multer');
+const path = require('path');
 
 const {mongoose} = require('./app/db/mongoose');
 
@@ -31,6 +33,8 @@ require('./app/engine/handlebars');
 
 // Middleware
 app.use(express.static(__dirname + '/public'));
+// app.use('/public', express.static(path.join(__dirname, 'public')));
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -41,6 +45,9 @@ app.use(session({
     saveUninitialized: true,
     secret: process.env.JWT_SECRET,
 }));
+// Passport
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
 // validator
 app.use(expressValidator({
     errorFormatter: function(param, msg, value) {

@@ -41,7 +41,7 @@ router.get('/users', (req, res) => {
 		email: 'andrew.kevin@gmail.com'
 	}];
 
-	res.render('users/users', {users, meta});
+	res.render('./users/users', {users, meta});
 });
 
 router.get('/users/profile', (req, res) => {
@@ -77,7 +77,7 @@ router.get('/users/profile', (req, res) => {
 		email: 'andrew.kevin@gmail.com'
 	}];
 
-	res.render('/users/profile', {users, meta});
+	res.render('./users/profile', {users, meta});
 });
 
 module.exports = router;
