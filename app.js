@@ -1,5 +1,8 @@
 const config = require('./config/config');
 const express = require('express');
+const stylus = require('stylus');
+const nib = require('nib');
+const jade = require('jade');
 const passport = require('passport');
 const expressValidator = require('express-validator');
 const bodyParser = require('body-parser');
@@ -7,8 +10,6 @@ const flash = require('connect-flash');
 const logger = require('morgan');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
-const handlebars = require('handlebars');
-const expressHandlebars = require('express-handlebars');
 const multer = require('multer');
 const path = require('path');
 
@@ -18,24 +19,23 @@ const app = express();
 const upload = multer({ dest: './uploads' });
 
 // Engine Setup
+function compile (str, path) {
+    return stylus(str).set('filename', path).use(nib);
+}
 app.set('views', __dirname + '/resources/views');
-const hbs = expressHandlebars({
-    extname: 'hbs',
-    defaultLayout: 'layout',
-    layoutsDir: __dirname+'/resources/views/layouts',
-    partialsDir: [
-        './resources/views/partials'
-    ]
-});
-app.engine('hbs', hbs);
-app.set('view engine', 'hbs');
-require('./app/engine/handlebars');
+app.set('view engine', 'jade');
+app.use(express.logger('dev'));
+app.use(status.middleware({
+    src: __dirname + '/public',
+    compile
+}));
+
 
 // Middleware
 app.use(express.static(__dirname + '/public'));
 // app.use('/public', express.static(path.join(__dirname, 'public')));
 
-app.use(logger('dev'));
+// app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(cookieParser);
