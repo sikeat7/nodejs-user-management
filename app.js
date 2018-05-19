@@ -2,7 +2,7 @@ const config = require('./config/config');
 const express = require('express');
 const stylus = require('stylus');
 const nib = require('nib');
-const jade = require('jade');
+const pug = require('pug');
 const passport = require('passport');
 const expressValidator = require('express-validator');
 const bodyParser = require('body-parser');
@@ -23,9 +23,9 @@ function compile (str, path) {
     return stylus(str).set('filename', path).use(nib);
 }
 app.set('views', __dirname + '/resources/views');
-app.set('view engine', 'jade');
-app.use(express.logger('dev'));
-app.use(status.middleware({
+app.set('view engine', 'pug');
+// app.use(express.logger('dev'));
+app.use(stylus.middleware({
     src: __dirname + '/public',
     compile
 }));
@@ -35,7 +35,7 @@ app.use(status.middleware({
 app.use(express.static(__dirname + '/public'));
 // app.use('/public', express.static(path.join(__dirname, 'public')));
 
-// app.use(logger('dev'));
+app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(cookieParser);

@@ -1,0 +1,26 @@
+extends ./../partials/layout.pug
+block body
+	main.col-md-9.ml-sm-auto.col-lg-10.px-4(role='main')
+		.d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+			h1.h2 #{meta.page_title}
+		.table-responsive
+			table.table.table-striped
+				thead
+					tr
+						th #
+						th First Name
+						th Last Name
+						th Mob No.
+						th Email
+						th Actions
+				tbody
+					each row, i in users
+						tr
+							td #{i+1}
+							td #{row.first_name}
+							td #{row.last_name}
+							td #{row.mob_no}
+							td #{row.email}
+							td
+								a(href='#')
+									i.icon.ion-md-open

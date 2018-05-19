@@ -13,7 +13,7 @@ router.get('/login', (req, res) => {
 		page_link: '/login'
 	};
 	if (req.user) return res.redirect('/login');
-    res.render('./auth/login', {layout: false, meta, error: req.flash('loginMessage') });
+    res.render('./auth/login', {meta, error: req.flash('loginMessage') });
 });
 
 router.post('/login', passport.authenticate('local-login', {
@@ -31,7 +31,7 @@ router.get('/register', (req, res) => {
 		page_link: '/register'
 	};
 	// if (req.user) return res.redirect('/login');
-    res.render('/auth/register', {layout: false, meta, message: req.flash('signupMessage') });
+    res.render('/auth/register', {meta, message: req.flash('signupMessage') });
 });
 
 router.post('/register', passport.authenticate('local-signup', {
