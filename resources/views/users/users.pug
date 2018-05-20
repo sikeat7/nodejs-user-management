@@ -14,6 +14,7 @@ block body
 						th Email
 						th Actions
 				tbody
+					- var total_users = 0;
 					each row, i in users
 						tr
 							td #{i+1}
@@ -24,3 +25,8 @@ block body
 							td
 								a(href='#')
 									i.icon.ion-md-open
+						- total_users++
+				tfoot
+					tr
+						th Total
+						th(colspan='5') #{total_users}
