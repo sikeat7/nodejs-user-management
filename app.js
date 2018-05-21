@@ -22,7 +22,10 @@ const upload = multer({ dest: './uploads' });
 function compile (str, path) {
     return stylus(str).set('filename', path).use(nib);
 }
-app.set('views', __dirname + '/resources/views');
+// Require static assets from public folder
+app.use(express.static(path.join(__dirname, 'public')));
+app.set('views', path.join(__dirname, 'resources/views'));
+app.locals.basedir = app.get('views');
 app.set('view engine', 'pug');
 // app.use(express.logger('dev'));
 app.use(stylus.middleware({
@@ -32,8 +35,8 @@ app.use(stylus.middleware({
 
 
 // Middleware
-app.use(express.static(__dirname + '/public'));
 // app.use('/public', express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname + '/public')));
 
 app.use(logger('dev'));
 app.use(bodyParser.json());

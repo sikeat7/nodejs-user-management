@@ -31,7 +31,7 @@ router.get('/register', (req, res) => {
 		page_link: '/register'
 	};
 	// if (req.user) return res.redirect('/login');
-    res.render('/auth/register', {meta, message: req.flash('signupMessage') });
+    res.render('./auth/register', {meta, message: req.flash('signupMessage') });
 });
 
 router.post('/register', passport.authenticate('local-signup', {
