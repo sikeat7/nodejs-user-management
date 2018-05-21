@@ -25,7 +25,6 @@ function compile (str, path) {
 // Require static assets from public folder
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'resources/views'));
-app.locals.basedir = app.get('views');
 app.set('view engine', 'pug');
 // app.use(express.logger('dev'));
 app.use(stylus.middleware({
